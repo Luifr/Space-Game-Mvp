@@ -11,12 +11,12 @@ public class Gunner : MonoBehaviour
 
     System.DateTime lastShotTimestamp = new System.DateTime(0);
 
-    private bool canShoot () {
+    private bool CanShoot () {
         var milissecondsSinceLastShot = System.DateTime.Now.Subtract(lastShotTimestamp).TotalMilliseconds;
         return milissecondsSinceLastShot >= shootCooldown;
     }
 
-    public void shoot () {
+    public void Shoot () {
         var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0;
 
@@ -27,20 +27,11 @@ public class Gunner : MonoBehaviour
         lastShotTimestamp = System.DateTime.Now;
     }
 
-    public void lookAt (Vector3 target) {
-        transform.Find("Gunner-barrel").GetComponent<GunnerBarrel>().lookAt(target);
+    private void ShootIfPossible () {
+        if (CanShoot()) Shoot();
     }
 
-    private void shootIfPossible () {
-        if (canShoot()) shoot();
-    }
-
-    private Vector3 getMousePosition () {
-        return Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    }
-
-    void Update() {
-        if (Input.GetMouseButtonDown(0)) shootIfPossible();
-        lookAt(getMousePosition());
+    public void PlayerFrame() {
+        if (Input.GetMouseButtonDown(0)) ShootIfPossible();
     }
 }

@@ -11,7 +11,7 @@ public class Bullet : MonoBehaviour
 
     public Vector3 velocity = Vector3.zero;
 
-    void die () {
+    void Die () {
         Object.Destroy(gameObject);
     }
 
@@ -19,6 +19,6 @@ public class Bullet : MonoBehaviour
         transform.position += transform.up * speed;
 
         secondsTillDeath -= Time.deltaTime;
-        if (secondsTillDeath <= 0) die();
+        if (secondsTillDeath <= 0) Die();
     }
 }
