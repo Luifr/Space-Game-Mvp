@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -32,6 +33,5 @@ public class PlayerMovement : MonoBehaviour
             direction.x += 1;
         }
         transform.position += Vector3.Normalize(direction) * (Time.deltaTime * speed);
-        
     }
 }
