@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class gunnerBarrel : MonoBehaviour {
-    const float forwardOffset = 0.04f;
+    const float forwardOffset = 0.07f;
 
     void Update() {
         var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
