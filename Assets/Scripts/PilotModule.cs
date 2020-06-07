@@ -30,6 +30,6 @@ public class PilotModule : MonoBehaviour
         if (Input.GetKey(KeyCode.D)) {
             direction.x += 1;
         }
-        transform.parent.position += Vector3.Normalize(direction) * (Time.deltaTime * speed);
+        transform.parent.parent.position += Vector3.Normalize(direction) * (Time.deltaTime * speed);
     }
 }
