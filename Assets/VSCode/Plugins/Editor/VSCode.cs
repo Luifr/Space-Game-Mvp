@@ -29,12 +29,12 @@ namespace dotBunny.Unity
         /// Current Version Code
         /// </summary>
         public const string VersionCode = "-RELEASE";
-        
+
         /// <summary>
         /// Additional File Extensions
         /// </summary>
         public const string FileExtensions = ".ts, .bjs, .javascript, .json, .html, .shader, .template";
-        
+
         /// <summary>
         /// Download URL for Unity Debbuger
         /// </summary>
@@ -62,12 +62,12 @@ namespace dotBunny.Unity
                 }
                 return EditorPrefs.GetString("VSCode_CodePath", current);
             }
-            set 
+            set
             {
                 EditorPrefs.SetString("VSCode_CodePath", value);
             }
         }
-        
+
         /// <summary>
         /// Get Program Files Path
         /// </summary>
@@ -85,8 +85,8 @@ namespace dotBunny.Unity
         {
             return Environment.GetEnvironmentVariable("ProgramFiles");
         }
-		
-        
+
+
         /// <summary>
         /// Should debug information be displayed in the Unity terminal?
         /// </summary>
@@ -133,21 +133,21 @@ namespace dotBunny.Unity
             set
             {
                 if ( value != UseUnityDebugger ) {
-                    
+
                     // Set value
                     EditorPrefs.SetBool("VSCode_UseUnityDebugger", value);
-                    
+
                     // Do not write the launch JSON file because the debugger uses its own
                     if ( value ) {
                         WriteLaunchFile = false;
                     }
-                    
+
                     // Update launch file
                     UpdateLaunchFile();
                 }
             }
         }
-        
+
         /// <summary>
         /// When opening a project in Unity, should it automatically open in VS Code.
         /// </summary>
@@ -269,7 +269,7 @@ namespace dotBunny.Unity
                 return System.IO.Path.GetDirectoryName(UnityEngine.Application.dataPath);
             }
         }
-        
+
         /// <summary>
         /// The full path to the workspace.
         /// </summary>
@@ -277,8 +277,8 @@ namespace dotBunny.Unity
         {
             get
             {
-                return UseParentWorkspace ? 
-                    Directory.GetParent(UnityProjectPath).FullName : 
+                return UseParentWorkspace ?
+                    Directory.GetParent(UnityProjectPath).FullName :
                     UnityProjectPath;
             }
         }
@@ -344,7 +344,7 @@ namespace dotBunny.Unity
             {
                 UpdateUnityPreferences(true);
                 UpdateLaunchFile();
-                
+
                 // Add Update Check
                 DateTime targetDate = LastUpdate.AddDays(UpdateTime);
                 if (DateTime.Now >= targetDate && AutomaticUpdates)
@@ -357,10 +357,10 @@ namespace dotBunny.Unity
                 {
                     CheckForAutoOpen();
                 }
-                
+
             }
-            
-            // Event for when script is reloaded 
+
+            // Event for when script is reloaded
             System.AppDomain.CurrentDomain.DomainUnload += System_AppDomain_CurrentDomain_DomainUnload;
         }
         static void System_AppDomain_CurrentDomain_DomainUnload(object sender, System.EventArgs e)
@@ -433,11 +433,11 @@ namespace dotBunny.Unity
         #endregion
 
         #region Private Members
-    
+
         /// <summary>
         /// Try to find automatically the installation of VSCode
         /// </summary>
-        static string AutodetectCodePath() 
+        static string AutodetectCodePath()
         {
             string[] possiblePaths =
 #if UNITY_EDITOR_OSX
@@ -469,7 +469,7 @@ namespace dotBunny.Unity
 #endif
             for(int i = 0; i < possiblePaths.Length; i++)
             {
-                if(VSCodeExists(possiblePaths[i])) 
+                if(VSCodeExists(possiblePaths[i]))
                 {
                     return possiblePaths[i];
                 }
@@ -495,10 +495,10 @@ namespace dotBunny.Unity
 
             // Check the path to see if there is "Insiders"
             if (CodePath.Contains("Insiders"))
-            {  
+            {
                 proc.StartInfo.Arguments = " -n -b \"com.microsoft.VSCodeInsiders\" --args " + args.Replace(@"\", @"\\");
-            } 
-            else 
+            }
+            else
             {
                 proc.StartInfo.Arguments = " -n -b \"com.microsoft.VSCode\" --args " + args.Replace(@"\", @"\\");
             }
@@ -598,20 +598,20 @@ namespace dotBunny.Unity
         }
 
         /// <summary>
-        /// Checks whether it should auto-open VSCode 
+        /// Checks whether it should auto-open VSCode
         /// </summary>
         /// <remarks>
         /// VSCode() gets called on Launch and Run, through IntializeOnLoad
         /// https://docs.unity3d.com/ScriptReference/InitializeOnLoadAttribute.html
         /// To make sure it only opens VSCode when Unity (re)launches (i.e. opens a project),
-        /// we compare the launch time, which we calculate using EditorApplication.timeSinceStartup.  
+        /// we compare the launch time, which we calculate using EditorApplication.timeSinceStartup.
         /// </remarks>
         static void CheckForAutoOpen()
         {
             double timeInSeconds = (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
             int unityLaunchTimeInSeconds = (int)(timeInSeconds - EditorApplication.timeSinceStartup);
             int prevUnityLaunchTime = EditorPrefs.GetInt("VSCode_UnityLaunchTime", 0);
-            // If launch time has changed, then Unity was re-opened 
+            // If launch time has changed, then Unity was re-opened
             if (unityLaunchTimeInSeconds > prevUnityLaunchTime) {
                 // Launch VSCode
                 VSCode.MenuOpenProject();
@@ -773,7 +773,7 @@ namespace dotBunny.Unity
 
         /// <summary>
         /// Manually install the original Unity Debuger
-        /// </summary> 
+        /// </summary>
         /// <remarks>
         /// This should auto update to the latest.
         /// </remarks>
@@ -781,7 +781,7 @@ namespace dotBunny.Unity
         {
             EditorUtility.DisplayProgressBar("VSCode", "Downloading Unity Debugger ...", 0.1f);
             byte[] fileContent;
-            
+
             try
             {
                 using (var webClient = new System.Net.WebClient())
@@ -802,17 +802,17 @@ namespace dotBunny.Unity
             {
                 EditorUtility.ClearProgressBar();
             }
-            
+
             // Do we have a file to install?
             if ( fileContent != null ) {
                 string fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".vsix";
                 File.WriteAllBytes(fileName, fileContent);
-                
+
                 CallVSCode(fileName);
             }
 
         }
-   
+
         // HACK: This is in until Unity can figure out why MD keeps opening even though a different program is selected.
         [MenuItem("Assets/Open C# Project In Code", false, 1000)]
         static void MenuOpenProject()
@@ -845,7 +845,7 @@ namespace dotBunny.Unity
         /// <remarks>
         /// Contains all 3 toggles: Enable/Disable; Debug On/Off; Writing Launch File On/Off
         /// </remarks>
-        [PreferenceItem("VSCode")]
+        [SettingsProvider]
         static void VSCodePreferencesItem()
         {
             if (EditorApplication.isCompiling)
@@ -860,16 +860,16 @@ namespace dotBunny.Unity
             EditorGUILayout.HelpBox(developmentInfo + " --- [ " + versionInfo + " ]", MessageType.None);
 
             EditorGUI.BeginChangeCheck();
-            
+
 // Need the VS Code executable
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("VS Code Path", GUILayout.Width(75));
-#if UNITY_5_3_OR_NEWER            
+#if UNITY_5_3_OR_NEWER
             CodePath = EditorGUILayout.DelayedTextField(CodePath,  GUILayout.ExpandWidth(true));
 #else
             CodePath = EditorGUILayout.TextField(CodePath,  GUILayout.ExpandWidth(true));
-#endif        
-            GUI.SetNextControlName("PathSetButton");    
+#endif
+            GUI.SetNextControlName("PathSetButton");
             if(GUILayout.Button("...", GUILayout.Height(14), GUILayout.Width(20)))
             {
                 GUI.FocusControl("PathSetButton");
@@ -890,7 +890,7 @@ namespace dotBunny.Unity
 
             EditorGUILayout.Space();
             RevertExternalScriptEditorOnExit = EditorGUILayout.Toggle(new GUIContent("Revert Script Editor On Unload", "Should the external script editor setting be reverted to its previous setting on project unload? This is useful if you do not use Code with all your projects."),RevertExternalScriptEditorOnExit);
-            
+
             EditorGUILayout.Space();
             UseParentWorkspace = EditorGUILayout.Toggle(new GUIContent("Parent as workspace", "Should the parent of the project be used as the workspace directory? Usefull if you have the Unity project in a subdirectory."),UseParentWorkspace);
 
@@ -1160,7 +1160,7 @@ namespace dotBunny.Unity
 
             return content;
         }
-       
+
         /// <summary>
         /// Update Visual Studio Code Launch file
         /// </summary>
@@ -1250,7 +1250,7 @@ namespace dotBunny.Unity
                     EditorPrefs.SetBool("VSCode_PreviousAttach", false);
                 }
                 EditorPrefs.SetBool("AllowAttachedDebuggingOfEditor", true);
-                
+
             }
             else
             {
