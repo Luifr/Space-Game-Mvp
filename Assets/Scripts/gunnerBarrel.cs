@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class gunnerBarrel : MonoBehaviour {
+public class GunnerBarrel : MonoBehaviour {
     const float forwardOffset = 0.07f;
 
-    void Update() {
-        var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePosition.z = 0;
-
-        var diff = mousePosition - transform.parent.position;
+    public void lookAt (Vector3 target) {
+        var diff = target - transform.parent.position;
         var direction = Quaternion.LookRotation(Vector3.forward, diff);
 
         transform.rotation = direction;
