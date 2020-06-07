@@ -5,12 +5,13 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 
+    [SerializeField]
     float speed = 10f;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -30,5 +31,6 @@ public class PlayerMovement : MonoBehaviour
             direction.x += 1;
         }
         transform.position += Vector3.Normalize(direction) * (Time.deltaTime * speed);
+        
     }
 }
