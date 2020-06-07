@@ -4,7 +4,7 @@ using UnityEngine;
 public class gunner : MonoBehaviour
 {
     [SerializeField]
-    GameObject BulletPrefab;
+    GameObject BulletPrefab = null;
 
     [SerializeField]
     float shootCooldown = 200; // Shooting priod. Measured in milisseconds / shots
