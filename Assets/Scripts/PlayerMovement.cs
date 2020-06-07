@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         Vector3 direction = Vector3.zero;
         if (Input.GetKey(KeyCode.W)) {
             direction.y += 1;
