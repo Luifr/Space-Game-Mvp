@@ -7,11 +7,12 @@ public class PilotModule : MonoBehaviour
 
     [SerializeField]
     float speed = 10f;
+    ShipMovement shipMovement;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        shipMovement = transform.parent.parent.GetComponent<ShipMovement>();
     }
 
     // Update is called once per frame
@@ -30,6 +31,8 @@ public class PilotModule : MonoBehaviour
         if (Input.GetKey(KeyCode.D)) {
             direction.x += 1;
         }
-        transform.parent.parent.position += Vector3.Normalize(direction) * (Time.deltaTime * speed);
+
+        shipMovement.Move(Vector3.Normalize(direction), speed);
+
     }
 }
