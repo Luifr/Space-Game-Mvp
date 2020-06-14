@@ -72,3 +72,4 @@ crashlytics-build.properties
 
 # Temp/Personal files
 __*
+.vscode
